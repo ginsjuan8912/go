@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	fmt "fmt"
 	"math/rand"
 	"time"
 )
@@ -23,13 +23,13 @@ func main() {
 
 	for {
 
-		player := playerPlays(userInput, guessNumber)
+		player := playerPlays(userInput, &guessNumber)
 
 		if player {
 			break
 		}
 
-		computer := computerPlays(guessNumber)
+		computer := computerPlays(&guessNumber)
 
 		if computer {
 			break
@@ -55,13 +55,13 @@ func generateNumber() int {
 	return rand.Intn(max-min+1) + min
 }
 
-func playerPlays(userInput int, guessNumber int) bool {
+func playerPlays(userInput int, guessNumber *int) bool {
 	fmt.Printf("your turn:")
 	fmt.Scanf("%d\n", &userInput)
 
 	printSleepMessage()
 
-	if userInput == guessNumber {
+	if userInput == *guessNumber {
 		fmt.Println("That is correct!!! you WIN!!!")
 		return true
 	}
@@ -69,7 +69,7 @@ func playerPlays(userInput int, guessNumber int) bool {
 	return false
 }
 
-func computerPlays(guessNumber int) bool {
+func computerPlays(guessNumber *int) bool {
 
 	fmt.Println("Is computer turn:")
 	computerGuess := generateNumber()
@@ -80,7 +80,7 @@ func computerPlays(guessNumber int) bool {
 
 	printSleepMessage()
 
-	if computerGuess == guessNumber {
+	if computerGuess == *guessNumber {
 		fmt.Println("That is correct!!! computer WIN!!!")
 		return true
 	}
