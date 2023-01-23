@@ -1,0 +1,4 @@
+
+Figure: Circle;a:631.654682;p:25.132741
+Figure: Rectangle;a:64.000000;p:128.000000
+Figure: Rectangle;a:100.000000;p:200.000000

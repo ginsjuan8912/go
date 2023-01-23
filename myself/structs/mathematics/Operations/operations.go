@@ -1,6 +1,8 @@
 package Operations
 
-import "errors"
+import (
+	"errors"
+)
 
 func Divide(divisor int, dividend int) (int, error) {
 
@@ -10,4 +12,14 @@ func Divide(divisor int, dividend int) (int, error) {
 	}
 
 	return dividend / divisor, nil
+}
+
+func Sum(numbersCh <-chan int) int {
+	total := 0
+
+	for number := range numbersCh {
+		total += number
+	}
+
+	return total
 }

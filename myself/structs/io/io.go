@@ -1,10 +1,13 @@
 package io
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"io"
 	"os"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -111,4 +114,48 @@ func (f IO) ReadFile(filename string) (contents string, err error) {
 	}
 
 	return contents, err
+}
+
+func LoadNumbers() ([]int, error) {
+
+	var numberArray = make([]int, 0, 100000)
+
+	file, err := os.Open("numbers.txt")
+
+	if err != nil {
+		return numberArray, errors.New("an error occurred when trying to read the file")
+	}
+
+	defer file.Close()
+
+	reader := bufio.NewReader(file)
+
+	for {
+		line, _, err := reader.ReadLine()
+
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		for _, s := range strings.Split(string(line), ",") {
+
+			n, err := strconv.Atoi(s)
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+
+			numberArray = append(numberArray, n)
+
+		}
+
+	}
+
+	return numberArray, nil
+
 }

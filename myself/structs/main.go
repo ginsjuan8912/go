@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	Tasks2 "structs/Tasks"
 	"structs/cache"
 	"structs/io"
 	"structs/mathematics/Geometry"
@@ -27,6 +28,15 @@ func main() {
 	}
 
 	sb := strings.Builder{}
+
+	numbers, err := io.LoadNumbers()
+
+	if err == nil {
+		result := Tasks2.ParallelSum(numbers)
+		fmt.Printf("the sum of all 100000 numbers is %d\n", result)
+	}
+
+	Tasks2.ExecuteWaitGroup(1, 2, 3)
 
 	//Save a figure under the cache
 	figureCache := cache.Create(20)

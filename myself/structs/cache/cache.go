@@ -74,9 +74,7 @@ func (c Cache) HandleError(err error, key string) {
 
 }
 
-/*
-The following function disposes the elements from the cache
-*/
+// Dispose /*
 func (c Cache) Dispose() {
 	c.elements = nil
 	c.capacity = 0
