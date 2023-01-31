@@ -1,8 +1,14 @@
 package Tasks
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
 	"structs/mathematics/Operations"
+	"structs/tree"
 	"sync"
 )
 
@@ -64,4 +70,76 @@ func ParallelSum(v []int) int {
 	wg.Wait()
 
 	return totalSum
+}
+
+func ToTree(fileName string) (tree.BinaryTree, error) {
+
+	var bTree = tree.BinaryTree{}
+	bTree.Initialize(0)
+
+	wg := sync.WaitGroup{}
+
+	var ch = make(chan int, 10)
+
+	//Read the numbers from the file
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+
+		file, err := os.Open(fileName)
+
+		if err != nil {
+			panic("cannot read the requested file")
+		}
+
+		defer file.Close()
+
+		reader := bufio.NewReader(file)
+
+		for {
+			line, _, err := reader.ReadLine()
+
+			if err == io.EOF {
+				break
+			}
+
+			for _, s := range strings.Split(string(line), ",") {
+
+				if s == "0 " || s == "\n" {
+					continue
+				}
+
+				number, convErr := strconv.Atoi(s)
+
+				if convErr != nil {
+					fmt.Printf("cannot convert the number %d", number)
+				}
+
+				ch <- number
+			}
+
+		}
+		close(ch)
+	}()
+
+	//Add each stream of the channel to the binary tree
+	wg.Add(1)
+	go func() {
+
+		defer wg.Done()
+
+		for number := range ch {
+			err := bTree.Root.Insert(int64(number))
+
+			if err != nil {
+				fmt.Printf("Cannot insert %d", number)
+				continue
+			}
+		}
+
+	}()
+
+	wg.Wait()
+
+	return bTree, nil
 }

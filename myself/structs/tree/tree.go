@@ -18,7 +18,7 @@ func (m EmptyInsertionMessage) Error() string {
 }
 
 type BinaryTree struct {
-	root        *BinaryNode
+	Root        *BinaryNode
 	restriction int64
 }
 
@@ -28,11 +28,11 @@ type BinaryNode struct {
 	data  int64
 }
 
-func (t *BinaryTree) insert(data int64) *BinaryTree {
-	if t.root == nil {
-		t.root = &BinaryNode{data: data, left: nil, right: nil}
+func (t *BinaryTree) Initialize(data int64) *BinaryTree {
+	if t.Root == nil {
+		t.Root = &BinaryNode{data: data, left: nil, right: nil}
 	} else {
-		err := t.root.insert(data)
+		err := t.Root.Insert(data)
 		switch err.(type) {
 		case EmptyInsertionMessage:
 			fmt.Println(err, "Cannot insert an empty number")
@@ -42,7 +42,7 @@ func (t *BinaryTree) insert(data int64) *BinaryTree {
 	return t
 }
 
-func (n *BinaryNode) insert(data int64) error {
+func (n *BinaryNode) Insert(data int64) error {
 
 	if n == nil {
 		return EmptyInsertionMessage{}
@@ -50,7 +50,7 @@ func (n *BinaryNode) insert(data int64) error {
 		if n.left == nil {
 			n.left = &BinaryNode{data: data, left: nil, right: nil}
 		} else {
-			err := n.left.insert(data)
+			err := n.left.Insert(data)
 			if err != nil {
 				return err
 			}
@@ -59,7 +59,7 @@ func (n *BinaryNode) insert(data int64) error {
 		if n.right == nil {
 			n.right = &BinaryNode{data: data, left: nil, right: nil}
 		} else {
-			err := n.right.insert(data)
+			err := n.right.Insert(data)
 			if err != nil {
 				return err
 			}
@@ -69,7 +69,7 @@ func (n *BinaryNode) insert(data int64) error {
 	return nil
 }
 
-func printTree(w io.Writer, node *BinaryNode, ns int, ch rune) {
+func PrintTree(w io.Writer, node *BinaryNode, ns int, ch rune) {
 	if node == nil {
 		return
 	}
@@ -78,6 +78,6 @@ func printTree(w io.Writer, node *BinaryNode, ns int, ch rune) {
 		fmt.Fprint(w, " ")
 	}
 	fmt.Fprintf(w, "%c:%v\n", ch, node.data)
-	printTree(w, node.left, ns+2, 'L')
-	printTree(w, node.right, ns+2, 'R')
+	PrintTree(w, node.left, ns+2, 'L')
+	PrintTree(w, node.right, ns+2, 'R')
 }

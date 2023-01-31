@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 	Tasks2 "structs/Tasks"
 	"structs/cache"
 	"structs/io"
 	"structs/mathematics/Geometry"
+	"structs/tree"
 )
 
 func main() {
@@ -29,13 +31,15 @@ func main() {
 
 	sb := strings.Builder{}
 
-	numbers, err := io.LoadNumbers()
+	bTree, errTree := Tasks2.ToTree("numbers2.txt")
 
-	if err == nil {
-		result := Tasks2.ParallelSum(numbers)
-		fmt.Printf("the sum of all 100000 numbers is %d\n", result)
+	if errTree != nil {
+		fmt.Println(errTree)
 	}
 
+	fmt.Println("Printing Tree ...")
+	tree.PrintTree(os.Stdout, bTree.Root, 0, 'R')
+	fmt.Println(" ...")
 	Tasks2.ExecuteWaitGroup(1, 2, 3)
 
 	//Save a figure under the cache
